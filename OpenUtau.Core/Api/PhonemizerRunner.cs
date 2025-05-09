@@ -179,10 +179,9 @@ namespace OpenUtau.Api {
         /// </summary>
         public void WaitFinish() {
             while (true) {
-                lock (busyLock) {
-                    if (requests.Count == 0) {
-                        return;
-                    }
+                Thread.Sleep(5000);
+                if (requests.Count == 0) {
+                    return;
                 }
             }
         }

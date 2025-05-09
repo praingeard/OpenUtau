@@ -356,6 +356,10 @@ namespace OpenUtau.Core {
             }
         }
 
+        public void WaitPhonemizerFinish() {
+            PhonemizerRunner.WaitFinish();
+        }
+
         #endregion
     }
 }

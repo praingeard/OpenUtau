@@ -169,6 +169,10 @@ namespace OpenUtau.Core.Render {
             }
             Task.Run(() => {
                 try {
+                    Thread.Sleep(200);
+                    //if (newCancellation.Token.IsCancellationRequested) {
+                    //     return;
+                    // }
                     RenderRequests(PrepareRequests(), newCancellation);
                 } catch (Exception e) {
                     if (!newCancellation.IsCancellationRequested) {
@@ -199,12 +203,14 @@ namespace OpenUtau.Core.Render {
                 request.sources = new WaveSource[request.phrases.Length];
                 for (var i = 0; i < request.phrases.Length; i++) {
                     var phrase = request.phrases[i];
-                    var firstPhone = phrase.phones.First();
-                    var lastPhone = phrase.phones.Last();
-                    var layout = phrase.renderer.Layout(phrase);
-                    double posMs = layout.positionMs - layout.leadingMs;
-                    double durMs = layout.estimatedLengthMs;
-                    request.sources[i] = new WaveSource(posMs, durMs, 0, 1);
+                    if (phrase != null) {
+                        var firstPhone = phrase.phones.First();
+                        var lastPhone = phrase.phones.Last();
+                        var layout = phrase.renderer.Layout(phrase);
+                        double posMs = layout.positionMs - layout.leadingMs;
+                        double durMs = layout.estimatedLengthMs;
+                        request.sources[i] = new WaveSource(posMs, durMs, 0, 1);
+                    }
                 }
                 request.mix = new WaveMix(request.sources);
             }

@@ -9,15 +9,19 @@
 
   <ItemGroup>
     <ProjectReference Include="../OpenUtau.Core/OpenUtau.Core.csproj" />
-    <ProjectReference Include="../OpenUtau.Plugin.Builtin/OpenUtau.Plugin.Builtin.csproj" />
-    <ProjectReference Include="../OpenUtau/OpenUtau.csproj" />
-    <None Include="/home/paul/Documents/SingingRobot/OpenUtau/OpenUtau.Plugin.Builtin/bin/Debug/netstandard2.1/OpenUtau.Plugin.Builtin.dll">
+      <ProjectReference Include="../OpenUtau.Plugin.Builtin/OpenUtau.Plugin.Builtin.csproj" />
+    <None Include="../OpenUtau.Plugin.Builtin/bin/Debug/netstandard2.1/OpenUtau.Plugin.Builtin.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.4" />
+        <PackageReference Include="Serilog" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

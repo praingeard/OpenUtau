@@ -169,10 +169,6 @@ namespace OpenUtau.Core.Render {
             }
             Task.Run(() => {
                 try {
-                    Thread.Sleep(200);
-                    if (newCancellation.Token.IsCancellationRequested) {
-                        return;
-                    }
                     RenderRequests(PrepareRequests(), newCancellation);
                 } catch (Exception e) {
                     if (!newCancellation.IsCancellationRequested) {

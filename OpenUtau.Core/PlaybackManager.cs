@@ -212,7 +212,7 @@ namespace OpenUtau.Core {
             }
         }
 
-        void SchedulePreRender() {
+        public void SchedulePreRender() {
             Log.Information("SchedulePreRender");
             var engine = new RenderEngine(DocManager.Inst.Project);
             engine.PreRenderProject(ref renderCancellation);

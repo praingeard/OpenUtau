@@ -178,10 +178,11 @@ namespace OpenUtau.Api {
         /// Should only be used in command line mode.
         /// </summary>
         public void WaitFinish() {
-            while (true) {
+            var finished = false;
+            while (!finished) {
                 Thread.Sleep(5000);
                 if (requests.Count == 0) {
-                    return;
+                    finished = true;
                 }
             }
         }

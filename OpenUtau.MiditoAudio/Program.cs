@@ -14,30 +14,26 @@ class Program {
         string inputUstxPath = args[0];
         string outputAudioPath = args[1];
 
-        await Task.Run(() => {
+        var synchronizationContext = new SynchronizationContext();
+        SynchronizationContext.SetSynchronizationContext(synchronizationContext);
+        // Schedule a task using the custom TaskScheduler
+        var mainScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        var mainThread = Thread.CurrentThread;
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        Encoding encoding = Encoding.GetEncoding("shift_jis");
+        if (encoding == null) {
+            Log.Information("Failed to load shift_jis encoding.");
+        } else {
+            Log.Information($"Encoding loaded: {encoding.EncodingName}");
+        }
 
-            var mainThread = Thread.CurrentThread;
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            Encoding encoding = Encoding.GetEncoding("shift_jis");
-            if (encoding == null) {
-                Log.Information("Failed to load shift_jis encoding.");
-            } else {
-                Log.Information($"Encoding loaded: {encoding.EncodingName}");
-            }
-
-            // Schedule a task using the custom TaskScheduler
-            var synchronizationContext = new SynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(synchronizationContext);
-            var mainScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            ToolsManager.Inst.Initialize();
-            SingerManager.Inst.Initialize();
-            DocManager.Inst.Initialize(mainThread, mainScheduler);
-            DocManager.Inst.PostOnUIThread = action => {
-                synchronizationContext.Post(_ => action(), null);
-            };
-
-            OpenUtau.Core.Format.Formats.LoadProject([inputUstxPath]);
-        });
+        ToolsManager.Inst.Initialize();
+        SingerManager.Inst.Initialize();
+        DocManager.Inst.Initialize(mainThread, mainScheduler);
+        DocManager.Inst.PostOnUIThread = action => {
+            synchronizationContext.Post(_ => action(), null);
+        };
+        OpenUtau.Core.Format.Formats.LoadProject([inputUstxPath]);
         DocManager.Inst.WaitPhonemizerFinish();
         Log.Information("Phonemizer processing completed.");
 
@@ -60,4 +56,5 @@ class Program {
         });
         Log.Information("Logging initialized.");
     }
+
 }
